@@ -63,6 +63,26 @@ public class ExtensionRestPathRegistry {
     }
 
     /**
+     * Register a REST handler to handle a method and route in this extension's path registry.
+     *
+     * @param method  The method to register.
+     * @param path  The path to register. May include named wildcards.
+     * @param name  An optional name of the REST handler
+     * @param legacyActionName  An optional legacy action name used to make extensions backwards compatible with plugins
+     * @param extensionRestHandler  The RestHandler to handle this route
+     */
+    @Deprecated
+    public void registerHandler(Method method, String path, String name, String legacyActionName, ExtensionRestHandler extensionRestHandler) {
+        pathTrie.insertOrUpdate(
+                path,
+                new SDKMethodHandlers(path, extensionRestHandler, method),
+                (mHandlers, newMHandler) -> mHandlers.addMethods(extensionRestHandler, method)
+        );
+        String restPathWithName = restPathToString(method, path, name, legacyActionName);
+        registeredPaths.add(restPathWithName);
+    }
+
+    /**
      * Get the registered REST handler for the specified method and path.
      *
      * @param method  the registered method.
@@ -107,5 +127,19 @@ public class ExtensionRestPathRegistry {
      */
     public static String restPathToString(Method method, String path, String name) {
         return method.name() + " " + path + " " + name;
+    }
+
+    /**
+     * Converts a REST method and path to a space delimited string to be used as a map lookup key.
+     *
+     * @param method  the method.
+     * @param path  the path.
+     * @param name  the name.
+     * @param legacyActionName  the legacy action name.
+     * @return A string appending the method and path.
+     */
+    @Deprecated
+    public static String restPathToString(Method method, String path, String name, String legacyActionName) {
+        return method.name() + " " + path + " " + name + " " + legacyActionName;
     }
 }

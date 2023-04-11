@@ -302,6 +302,7 @@ public class ExtensionsRunner {
                             route.getMethod(),
                             route.getPath(),
                             ((RouteHandler) route).name(),
+                            ((RouteHandler) route).legacyActionName(),
                             extensionRestHandler
                         );
                     } else {

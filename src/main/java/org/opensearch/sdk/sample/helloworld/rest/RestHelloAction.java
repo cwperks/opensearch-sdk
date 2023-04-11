@@ -67,7 +67,7 @@ public class RestHelloAction extends BaseExtensionRestHandler {
     @Override
     public List<RouteHandler> routeHandlers() {
         return List.of(
-            new ExtensionRouteHandler(this.extensionShortName, "greet", GET, "/hello", handleGetRequest),
+            new ExtensionRouteHandler(this.extensionShortName, "greet", "cluster:admin/opensearch/hw/greet", GET, "/hello", handleGetRequest),
             new ExtensionRouteHandler(this.extensionShortName, "greet_with_adjective", POST, "/hello", handlePostRequest),
             new ExtensionRouteHandler(this.extensionShortName, "greet_with_name", PUT, "/hello/{name}", handlePutRequest),
             new ExtensionRouteHandler(this.extensionShortName, "goodbye", DELETE, "/goodbye", handleDeleteRequest)

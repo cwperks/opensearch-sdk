@@ -26,4 +26,15 @@ public class ExtensionRouteHandler extends RouteHandler {
     ) {
         super("extension:" + extensionShortName + "/" + handlerName, method, path, handler);
     }
+
+    public ExtensionRouteHandler(
+            String extensionShortName,
+            String handlerName,
+            String legacyActionName,
+            RestRequest.Method method,
+            String path,
+            Function<RestRequest, ExtensionRestResponse> handler
+    ) {
+        super("extension:" + extensionShortName + "/" + handlerName, legacyActionName, method, path, handler);
+    }
 }

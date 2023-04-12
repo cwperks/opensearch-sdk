@@ -18,8 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.opensearch.common.bytes.BytesArray;
 import org.opensearch.extensions.rest.ExtensionRestResponse;
 import org.opensearch.extensions.rest.RouteHandler;
-import org.opensearch.http.HttpRequest;
-import org.opensearch.http.HttpResponse;
 import org.opensearch.rest.RestRequest;
 import org.opensearch.rest.RestRequest.Method;
 import org.opensearch.sdk.rest.TestSDKRestRequest;

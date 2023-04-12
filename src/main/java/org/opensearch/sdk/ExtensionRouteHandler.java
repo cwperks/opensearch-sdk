@@ -28,13 +28,36 @@ public class ExtensionRouteHandler extends RouteHandler {
     }
 
     public ExtensionRouteHandler(
-            String extensionShortName,
-            String handlerName,
-            String legacyActionName,
-            RestRequest.Method method,
-            String path,
-            Function<RestRequest, ExtensionRestResponse> handler
+        String extensionShortName,
+        String handlerName,
+        boolean willCreateScheduledJob,
+        RestRequest.Method method,
+        String path,
+        Function<RestRequest, ExtensionRestResponse> handler
+    ) {
+        super("extension:" + extensionShortName + "/" + handlerName, willCreateScheduledJob, method, path, handler);
+    }
+
+    public ExtensionRouteHandler(
+        String extensionShortName,
+        String handlerName,
+        String legacyActionName,
+        RestRequest.Method method,
+        String path,
+        Function<RestRequest, ExtensionRestResponse> handler
     ) {
         super("extension:" + extensionShortName + "/" + handlerName, legacyActionName, method, path, handler);
+    }
+
+    public ExtensionRouteHandler(
+        String extensionShortName,
+        String handlerName,
+        String legacyActionName,
+        boolean willCreateScheduledJob,
+        RestRequest.Method method,
+        String path,
+        Function<RestRequest, ExtensionRestResponse> handler
+    ) {
+        super("extension:" + extensionShortName + "/" + handlerName, legacyActionName, willCreateScheduledJob, method, path, handler);
     }
 }

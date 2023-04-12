@@ -24,6 +24,10 @@ import org.opensearch.sdk.ExtensionsRunner;
 import org.opensearch.sdk.api.ActionExtension;
 import org.opensearch.sdk.sample.helloworld.rest.RestHelloAction;
 import org.opensearch.sdk.sample.helloworld.rest.RestRemoteHelloAction;
+import org.opensearch.sdk.sample.helloworld.transport.HWJobParameterAction;
+import org.opensearch.sdk.sample.helloworld.transport.HWJobParameterTransportAction;
+import org.opensearch.sdk.sample.helloworld.transport.HWJobRunnerAction;
+import org.opensearch.sdk.sample.helloworld.transport.HWJobRunnerTransportAction;
 import org.opensearch.sdk.sample.helloworld.transport.SampleAction;
 import org.opensearch.sdk.sample.helloworld.transport.SampleTransportAction;
 
@@ -61,7 +65,11 @@ public class HelloWorldExtension extends BaseExtension implements ActionExtensio
 
     @Override
     public List<ActionHandler<? extends ActionRequest, ? extends ActionResponse>> getActions() {
-        return Arrays.asList(new ActionHandler<>(SampleAction.INSTANCE, SampleTransportAction.class));
+        return Arrays.asList(
+            new ActionHandler<>(SampleAction.INSTANCE, SampleTransportAction.class),
+            new ActionHandler<>(HWJobRunnerAction.INSTANCE, HWJobRunnerTransportAction.class),
+            new ActionHandler<>(HWJobParameterAction.INSTANCE, HWJobParameterTransportAction.class)
+        );
     }
 
     /**

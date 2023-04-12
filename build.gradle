@@ -76,6 +76,7 @@ repositories {
 dependencies {
 
     def opensearchVersion = "3.0.0-SNAPSHOT"
+    def jobSchedulerVersion = "3.0.0.0-SNAPSHOT"
     def log4jVersion = "2.20.0"
     def nettyVersion = "4.1.91.Final"
     def jacksonDatabindVersion = "2.14.2"
@@ -85,6 +86,11 @@ dependencies {
     def junit5Version = "5.9.2"
     def junitPlatform = "1.9.2"
     def jaxbVersion = "2.3.1"
+
+    // zipArchive group: 'org.opensearch.plugin', name:'opensearch-job-scheduler', version: "${opensearchVersion}.0"
+
+    implementation("org.opensearch:opensearch-job-scheduler:${jobSchedulerVersion}")
+    implementation "org.opensearch:opensearch-job-scheduler-spi:${jobSchedulerVersion}"
 
     implementation("org.opensearch:opensearch:${opensearchVersion}")
     implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")

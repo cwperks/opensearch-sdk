@@ -54,11 +54,36 @@ public class ExtensionRestPathRegistry {
      */
     public void registerHandler(Method method, String path, String name, ExtensionRestHandler extensionRestHandler) {
         pathTrie.insertOrUpdate(
-                path,
-                new SDKMethodHandlers(path, extensionRestHandler, method),
-                (mHandlers, newMHandler) -> mHandlers.addMethods(extensionRestHandler, method)
+            path,
+            new SDKMethodHandlers(path, extensionRestHandler, method),
+            (mHandlers, newMHandler) -> mHandlers.addMethods(extensionRestHandler, method)
         );
-        String restPathWithName = restPathToString(method, path, name);
+        String restPathWithName = restPathToString(method, path, name, false);
+        registeredPaths.add(restPathWithName);
+    }
+
+    /**
+     * Register a REST handler to handle a method and route in this extension's path registry.
+     *
+     * @param method  The method to register.
+     * @param path  The path to register. May include named wildcards.
+     * @param name  An optional name of the REST handler
+     * @param willCreateScheduledJob  A flag to indicate if the handler creates a scheduled job
+     * @param extensionRestHandler  The RestHandler to handle this route
+     */
+    public void registerHandler(
+        Method method,
+        String path,
+        String name,
+        boolean willCreateScheduledJob,
+        ExtensionRestHandler extensionRestHandler
+    ) {
+        pathTrie.insertOrUpdate(
+            path,
+            new SDKMethodHandlers(path, extensionRestHandler, method),
+            (mHandlers, newMHandler) -> mHandlers.addMethods(extensionRestHandler, method)
+        );
+        String restPathWithName = restPathToString(method, path, name, willCreateScheduledJob);
         registeredPaths.add(restPathWithName);
     }
 
@@ -72,13 +97,47 @@ public class ExtensionRestPathRegistry {
      * @param extensionRestHandler  The RestHandler to handle this route
      */
     @Deprecated
-    public void registerHandler(Method method, String path, String name, String legacyActionName, ExtensionRestHandler extensionRestHandler) {
+    public void registerHandler(
+        Method method,
+        String path,
+        String name,
+        String legacyActionName,
+        ExtensionRestHandler extensionRestHandler
+    ) {
         pathTrie.insertOrUpdate(
-                path,
-                new SDKMethodHandlers(path, extensionRestHandler, method),
-                (mHandlers, newMHandler) -> mHandlers.addMethods(extensionRestHandler, method)
+            path,
+            new SDKMethodHandlers(path, extensionRestHandler, method),
+            (mHandlers, newMHandler) -> mHandlers.addMethods(extensionRestHandler, method)
         );
-        String restPathWithName = restPathToString(method, path, name, legacyActionName);
+        String restPathWithName = restPathToString(method, path, name, false, legacyActionName);
+        registeredPaths.add(restPathWithName);
+    }
+
+    /**
+     * Register a REST handler to handle a method and route in this extension's path registry.
+     *
+     * @param method  The method to register.
+     * @param path  The path to register. May include named wildcards.
+     * @param name  An optional name of the REST handler
+     * @param willCreateScheduledJob  A flag to indicate if the handler creates a scheduled job
+     * @param legacyActionName  An optional legacy action name used to make extensions backwards compatible with plugins
+     * @param extensionRestHandler  The RestHandler to handle this route
+     */
+    @Deprecated
+    public void registerHandler(
+        Method method,
+        String path,
+        String name,
+        boolean willCreateScheduledJob,
+        String legacyActionName,
+        ExtensionRestHandler extensionRestHandler
+    ) {
+        pathTrie.insertOrUpdate(
+            path,
+            new SDKMethodHandlers(path, extensionRestHandler, method),
+            (mHandlers, newMHandler) -> mHandlers.addMethods(extensionRestHandler, method)
+        );
+        String restPathWithName = restPathToString(method, path, name, willCreateScheduledJob, legacyActionName);
         registeredPaths.add(restPathWithName);
     }
 
@@ -123,10 +182,11 @@ public class ExtensionRestPathRegistry {
      * @param method  the method.
      * @param path  the path.
      * @param name  the name.
+     * @param willCreateScheduledJob  A flag to indicate if the handler creates a scheduled job
      * @return A string appending the method and path.
      */
-    public static String restPathToString(Method method, String path, String name) {
-        return method.name() + " " + path + " " + name;
+    public static String restPathToString(Method method, String path, String name, boolean willCreateScheduledJob) {
+        return method.name() + " " + path + " " + name + " " + willCreateScheduledJob;
     }
 
     /**
@@ -135,11 +195,18 @@ public class ExtensionRestPathRegistry {
      * @param method  the method.
      * @param path  the path.
      * @param name  the name.
+     * @param willCreateScheduledJob  A flag to indicate if the handler creates a scheduled job
      * @param legacyActionName  the legacy action name.
      * @return A string appending the method and path.
      */
     @Deprecated
-    public static String restPathToString(Method method, String path, String name, String legacyActionName) {
-        return method.name() + " " + path + " " + name + " " + legacyActionName;
+    public static String restPathToString(
+        Method method,
+        String path,
+        String name,
+        boolean willCreateScheduledJob,
+        String legacyActionName
+    ) {
+        return method.name() + " " + path + " " + name + " " + willCreateScheduledJob + " " + legacyActionName;
     }
 }

@@ -240,4 +240,69 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
         }
         return null;
     }
+
+    public GreetJobPojo toPojo() {
+        GreetJobPojo.SchedulePojo.IntervalPojo interval = null;
+        if (this.schedule instanceof IntervalSchedule) {
+            interval = new GreetJobPojo.SchedulePojo.IntervalPojo(
+                    ((IntervalSchedule)this.schedule).getUnit().toString(),
+                    ((IntervalSchedule)this.schedule).getInterval(),
+                    ((IntervalSchedule)this.schedule).getStartTime().toEpochMilli()
+            );
+        }
+        return new GreetJobPojo(
+                this.enabledTime.toEpochMilli(),
+                this.lastUpdateTime.toEpochMilli(),
+                this.name,
+                this.lockDurationSeconds.intValue(),
+                this.isEnabled.booleanValue(),
+                new GreetJobPojo.SchedulePojo(
+                        interval
+                ));
+    }
+
+    public static class GreetJobPojo {
+        public long enabled_time;
+        public long last_update_time;
+
+        public String name;
+
+        public int lock_duration_seconds;
+
+        public boolean enabled;
+
+        public SchedulePojo schedule;
+
+        public GreetJobPojo(long enabledTime, long lastUpdateTime, String name, int lockDurationSeconds, boolean enabled, SchedulePojo schedule) {
+            this.enabled_time = enabledTime;
+            this.last_update_time = lastUpdateTime;
+            this.name = name;
+            this.lock_duration_seconds = lockDurationSeconds;
+            this.enabled = enabled;
+            this.schedule = schedule;
+        }
+
+        public static class SchedulePojo {
+
+            public IntervalPojo interval;
+
+            public SchedulePojo(IntervalPojo interval) {
+                this.interval = interval;
+            }
+
+            public static class IntervalPojo {
+                public String unit;
+
+                public int period;
+
+                public long start_time;
+
+                public IntervalPojo(String unit, int period, long start_time) {
+                    this.unit = unit;
+                    this.period = period;
+                    this.start_time = start_time;
+                }
+            }
+        }
+    }
 }

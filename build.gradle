@@ -89,7 +89,7 @@ dependencies {
 
     // zipArchive group: 'org.opensearch.plugin', name:'opensearch-job-scheduler', version: "${opensearchVersion}.0"
 
-    implementation("org.opensearch:opensearch-job-scheduler:${jobSchedulerVersion}")
+    implementation("org.opensearch.plugin:opensearch-job-scheduler:${jobSchedulerVersion}")
     implementation "org.opensearch:opensearch-job-scheduler-spi:${jobSchedulerVersion}"
 
     implementation("org.opensearch:opensearch:${opensearchVersion}")

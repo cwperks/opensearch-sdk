@@ -9,12 +9,13 @@
 
 package org.opensearch.sdk.sample.helloworld.transport;
 
+import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opensearch.action.ActionListener;
 import org.opensearch.action.support.ActionFilters;
 import org.opensearch.action.support.TransportAction;
-import org.opensearch.common.inject.Inject;
+import org.opensearch.common.inject.Provides;
 import org.opensearch.common.xcontent.LoggingDeprecationHandler;
 import org.opensearch.common.xcontent.XContentHelper;
 import org.opensearch.common.xcontent.XContentType;
@@ -60,6 +61,7 @@ public class HWJobParameterTransportAction extends TransportAction<JobParameterR
                 XContentType.JSON
             );
             ensureExpectedToken(XContentParser.Token.START_OBJECT, parser.nextToken(), parser);
+            System.out.println("GreetJob.parse");
             ScheduledJobParameter scheduledJobParameter = GreetJob.parse(parser);
             JobParameterResponse jobParameterResponse = new JobParameterResponse(new ExtensionJobParameter(scheduledJobParameter));
             listener.onResponse(jobParameterResponse);

@@ -139,6 +139,8 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
             String fieldName = parser.currentName();
             parser.nextToken();
 
+            System.out.println("fieldName: " + fieldName);
+
             switch (fieldName) {
                 case NAME_FIELD:
                     name = parser.text();

@@ -11,6 +11,7 @@ package org.opensearch.sdk;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,12 +22,15 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.hc.core5.function.Factory;
+import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
 import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
+import org.apache.hc.core5.http.message.BasicHeader;
 import org.apache.hc.core5.http.nio.ssl.TlsStrategy;
 import org.apache.hc.core5.reactor.ssl.TlsDetails;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
@@ -127,7 +131,10 @@ public class SDKClient implements Closeable {
      * @return An instance of the builder
      */
     private static RestClientBuilder builder(String hostAddress, int port) {
-        RestClientBuilder builder = RestClient.builder(new HttpHost(hostAddress, port));
+        String defaultScheme = "https";
+        RestClientBuilder builder = RestClient.builder(new HttpHost(defaultScheme, hostAddress, port));
+        String basicAdminHeader = Base64.encodeBase64String("admin:admin".getBytes(StandardCharsets.UTF_8));
+        builder.setDefaultHeaders(new Header[]{new BasicHeader("Authorization", "Basic " + basicAdminHeader)});
         builder.setStrictDeprecationMode(true);
         builder.setHttpClientConfigCallback(httpClientBuilder -> {
             try {
@@ -176,6 +183,7 @@ public class SDKClient implements Closeable {
 
         // Create Client
         OpenSearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper(mapper));
+
         return transport;
     }
 

@@ -75,7 +75,6 @@ public class RestHelloAction extends BaseExtensionRestHandler {
                 "/hello",
                 handleGetRequest
             ),
-            new ExtensionRouteHandler(this.extensionShortName, "greet_on_schedule", true, PUT, "/schedule/hello", handleScheduleRequest),
             new ExtensionRouteHandler(this.extensionShortName, "greet_with_adjective", POST, "/hello", handlePostRequest),
             new ExtensionRouteHandler(this.extensionShortName, "greet_with_name", PUT, "/hello/{name}", handlePutRequest),
             new ExtensionRouteHandler(this.extensionShortName, "goodbye", DELETE, "/goodbye", handleDeleteRequest)
@@ -83,13 +82,6 @@ public class RestHelloAction extends BaseExtensionRestHandler {
     }
 
     private Function<RestRequest, ExtensionRestResponse> handleGetRequest = (request) -> {
-        String worldNameWithRandomAdjective = worldAdjectives.isEmpty()
-            ? worldName
-            : String.join(" ", worldAdjectives.get(rand.nextInt(worldAdjectives.size())), worldName);
-        return new ExtensionRestResponse(request, OK, String.format(GREETING, worldNameWithRandomAdjective));
-    };
-
-    private Function<RestRequest, ExtensionRestResponse> handleScheduleRequest = (request) -> {
         String worldNameWithRandomAdjective = worldAdjectives.isEmpty()
             ? worldName
             : String.join(" ", worldAdjectives.get(rand.nextInt(worldAdjectives.size())), worldName);

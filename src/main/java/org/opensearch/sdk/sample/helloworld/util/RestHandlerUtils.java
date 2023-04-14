@@ -14,6 +14,7 @@ import static org.opensearch.rest.RestStatus.INTERNAL_SERVER_ERROR;
 
 import java.io.IOException;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opensearch.OpenSearchStatusException;
@@ -26,6 +27,7 @@ import org.opensearch.common.xcontent.LoggingDeprecationHandler;
 import org.opensearch.common.xcontent.XContentHelper;
 import org.opensearch.common.xcontent.XContentType;
 import org.opensearch.core.xcontent.NamedXContentRegistry;
+import org.opensearch.core.xcontent.ToXContent;
 import org.opensearch.core.xcontent.XContentParser;
 import org.opensearch.index.IndexNotFoundException;
 import org.opensearch.indices.InvalidIndexNameException;
@@ -39,6 +41,8 @@ import com.google.common.base.Throwables;
  */
 public final class RestHandlerUtils {
     private static final Logger logger = LogManager.getLogger(RestHandlerUtils.class);
+
+    public static final ToXContent.MapParams XCONTENT_WITH_TYPE = new ToXContent.MapParams(ImmutableMap.of("with_type", "true"));
 
     private RestHandlerUtils() {}
 

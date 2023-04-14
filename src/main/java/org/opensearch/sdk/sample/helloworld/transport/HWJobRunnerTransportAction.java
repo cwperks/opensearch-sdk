@@ -9,22 +9,21 @@
 
 package org.opensearch.sdk.sample.helloworld.transport;
 
+import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.opensearch.action.ActionListener;
 import org.opensearch.action.get.GetRequest;
 import org.opensearch.action.support.ActionFilters;
 import org.opensearch.action.support.TransportAction;
-import org.opensearch.common.inject.Inject;
-import org.opensearch.common.settings.Settings;
+import org.opensearch.common.inject.Provides;
 import org.opensearch.common.xcontent.LoggingDeprecationHandler;
 import org.opensearch.common.xcontent.XContentType;
 import org.opensearch.core.xcontent.XContentParser;
 import org.opensearch.jobscheduler.spi.JobExecutionContext;
 import org.opensearch.jobscheduler.transport.request.JobRunnerRequest;
 import org.opensearch.jobscheduler.transport.response.JobRunnerResponse;
-import org.opensearch.sdk.ExtensionsRunner;
-import org.opensearch.sdk.SDKClient;
+import org.opensearch.sdk.SDKClient.SDKRestClient;
 import org.opensearch.sdk.SDKNamedXContentRegistry;
 import org.opensearch.sdk.sample.helloworld.schedule.GreetJob;
 import org.opensearch.tasks.Task;
@@ -43,22 +42,19 @@ public class HWJobRunnerTransportAction extends TransportAction<JobRunnerRequest
 
     private static final Logger LOG = LogManager.getLogger(HWJobRunnerTransportAction.class);
 
-    private SDKClient.SDKRestClient client;
+    private SDKRestClient client;
     private final SDKNamedXContentRegistry xContentRegistry;
-    private final Settings settings;
 
     @Inject
     protected HWJobRunnerTransportAction(
-        ExtensionsRunner extensionsRunner,
         ActionFilters actionFilters,
         TaskManager taskManager,
         SDKNamedXContentRegistry xContentRegistry,
-        SDKClient.SDKRestClient client
+        SDKRestClient client
     ) {
         super(HWJobRunnerAction.NAME, actionFilters, taskManager);
         this.client = client;
         this.xContentRegistry = xContentRegistry;
-        this.settings = extensionsRunner.getEnvironmentSettings();
     }
 
     @Override

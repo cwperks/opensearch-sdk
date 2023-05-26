@@ -82,6 +82,7 @@ dependencies {
     implementation project(':')
     implementation("org.opensearch:opensearch-job-scheduler:${jobSchedulerVersion}")
     implementation("org.opensearch:opensearch-job-scheduler-spi:${jobSchedulerVersion}")
+    implementation("org.opensearch:common-utils:${jobSchedulerVersion}")
 
     testImplementation project(':').sourceSets.test.output
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junit5Version}")

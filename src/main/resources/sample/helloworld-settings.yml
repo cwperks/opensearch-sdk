@@ -7,9 +7,9 @@ hostPort: 4532
 # Default opensearch address and port to connect to if the values received during handshake are wrong
 opensearchAddress: 127.0.0.1
 opensearchPort: 9200
-#ssl.transport.enabled: true
-#ssl.transport.pemcert_filepath: certs/extension-01.pem
-#ssl.transport.pemkey_filepath: certs/extension-01-key.pem
-#ssl.transport.pemtrustedcas_filepath: certs/root-ca.pem
-#ssl.transport.enforce_hostname_verification: false
-#path.home: <path/to/extension>
+ssl.transport.enabled: true
+ssl.transport.pemcert_filepath: certs/extension-01.pem
+ssl.transport.pemkey_filepath: certs/extension-01-key.pem
+ssl.transport.pemtrustedcas_filepath: certs/root-ca.pem
+ssl.transport.enforce_hostname_verification: false
+path.home: /Users/cwperx/Projects/opensearch/opensearch-sdk-java

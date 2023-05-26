@@ -30,6 +30,7 @@ import org.opensearch.client.opensearch.indices.OpenSearchIndicesClient;
 import org.opensearch.common.Strings;
 import org.opensearch.common.io.stream.StreamInput;
 import org.opensearch.common.xcontent.json.JsonXContent;
+import org.opensearch.commons.authuser.User;
 import org.opensearch.core.xcontent.XContentBuilder;
 import org.opensearch.extensions.ExtensionsManager;
 import org.opensearch.extensions.action.RemoteExtensionActionResponse;
@@ -209,6 +210,7 @@ public class RestRemoteHelloAction extends BaseExtensionRestHandler {
 
         Schedule schedule = new IntervalSchedule(Instant.now(), 1, ChronoUnit.MINUTES);
         Duration duration = Duration.of(1, ChronoUnit.MINUTES);
+        User user = new User("craig", List.of("backend_role1"), List.of("role1"), List.of());
 
         GreetJob job = new GreetJob("hw", schedule, true, Instant.now(), null, Instant.now(), duration.getSeconds());
 

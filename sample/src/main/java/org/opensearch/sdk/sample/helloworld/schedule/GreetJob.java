@@ -27,6 +27,7 @@ import org.opensearch.jobscheduler.spi.schedule.ScheduleParser;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.List;
 
 import static org.opensearch.common.xcontent.XContentParserUtils.ensureExpectedToken;
 
@@ -288,13 +289,15 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
                 ((IntervalSchedule) this.schedule).getStartTime().toEpochMilli()
             );
         }
+        GreetJobPojo.OperatorPojo.UserPojo user = new GreetJobPojo.OperatorPojo.UserPojo("Craig", List.of("all_access"), List.of("admin"));
         return new GreetJobPojo(
             this.enabledTime.toEpochMilli(),
             this.lastUpdateTime.toEpochMilli(),
             this.name,
             this.lockDurationSeconds.intValue(),
             this.isEnabled.booleanValue(),
-            new GreetJobPojo.SchedulePojo(interval)
+            new GreetJobPojo.SchedulePojo(interval),
+            new GreetJobPojo.OperatorPojo(user)
         );
     }
 
@@ -313,6 +316,8 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
 
         public SchedulePojo schedule;
 
+        public OperatorPojo operator;
+
         /**
          *
          * @param enabledTime
@@ -321,6 +326,7 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
          * @param lockDurationSeconds
          * @param enabled
          * @param schedule
+         * @param operator
          */
         public GreetJobPojo(
             long enabledTime,
@@ -328,7 +334,8 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
             String name,
             int lockDurationSeconds,
             boolean enabled,
-            SchedulePojo schedule
+            SchedulePojo schedule,
+            OperatorPojo operator
         ) {
             this.enabled_time = enabledTime;
             this.last_update_time = lastUpdateTime;
@@ -336,6 +343,55 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
             this.lock_duration_seconds = lockDurationSeconds;
             this.enabled = enabled;
             this.schedule = schedule;
+            this.operator = operator;
+        }
+
+        /**
+         * A plain java representation of a Operator using only primitives
+         */
+        public static class OperatorPojo {
+            public UserPojo user;
+
+            public String token;
+
+            /**
+             *
+             * @param user The user to associate with the scheduled job
+             */
+            public OperatorPojo(UserPojo user) {
+                this.user = user;
+            }
+
+            /**
+             *
+             * @param token A valid on-behalf-of token for the user who this job will be scheduler for
+             */
+            public OperatorPojo(String token) {
+                this.token = token;
+            }
+
+            /**
+             * A plain java representation of a User using only primitives
+             */
+            public static class UserPojo {
+                public String username;
+
+                public String roles;
+
+                public String backend_roles;
+
+                /**
+                 *
+                 * @param username The username
+                 * @param roles roles
+                 * @param backend_roles backendRoles
+                 */
+                public UserPojo(String username, List<String> roles, List<String> backend_roles) {
+                    this.username = username;
+                    this.roles = String.join(",", roles);
+                    this.backend_roles = String.join(",", backend_roles);
+                }
+            }
         }
 
         /**

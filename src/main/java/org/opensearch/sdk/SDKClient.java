@@ -147,7 +147,7 @@ public class SDKClient implements Closeable {
         if (this.sdkRestClient != null) {
             this.sdkRestClient.getRestHighLevelClient()
                 .getLowLevelClient()
-                .setNodes(List.of(new Node(new HttpHost("https", address.getAddress(), 9200))));
+                .setNodes(List.of(new Node(new HttpHost("https", address, 9200))));
         }
         // Update the settings on the already-initialized OpenSearchAsyncClient
         if (this.javaAsyncClient != null) {
@@ -170,7 +170,7 @@ public class SDKClient implements Closeable {
         System.out.println("Rest client port: " + port);
         RestClientBuilder builder = RestClient.builder(new HttpHost("https", hostAddress, 9200));
         String basicAdminHeader = Base64.encodeBase64String("admin:admin".getBytes(StandardCharsets.UTF_8));
-        builder.setDefaultHeaders(new Header[]{new BasicHeader("Authorization", "Basic " + basicAdminHeader)});
+        builder.setDefaultHeaders(new Header[] { new BasicHeader("Authorization", "Basic " + basicAdminHeader) });
         builder.setStrictDeprecationMode(true);
         builder.setHttpClientConfigCallback(httpClientBuilder -> {
             try {

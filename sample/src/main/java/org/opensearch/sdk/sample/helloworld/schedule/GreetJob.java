@@ -169,7 +169,7 @@ public class GreetJob implements Writeable, ToXContentObject, ScheduledJobParame
         Instant enabledTime = null;
         Instant disabledTime = null;
         Instant lastUpdateTime = null;
-        Long lockDurationSeconds = 5L;
+        Long lockDurationSeconds = 60L;
 
         ensureExpectedToken(XContentParser.Token.START_OBJECT, parser.currentToken(), parser);
         while (parser.nextToken() != XContentParser.Token.END_OBJECT) {

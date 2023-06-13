@@ -34,6 +34,7 @@ import org.opensearch.sdk.sample.helloworld.transport.HWJobParameterAction;
 import org.opensearch.sdk.sample.helloworld.transport.HWJobParameterTransportAction;
 import org.opensearch.sdk.sample.helloworld.transport.HWJobRunnerAction;
 import org.opensearch.sdk.sample.helloworld.transport.HWJobRunnerTransportAction;
+import org.opensearch.sdk.sample.helloworld.transport.HelloWorldJobRunner;
 import org.opensearch.sdk.sample.helloworld.transport.SampleAction;
 import org.opensearch.sdk.sample.helloworld.transport.SampleTransportAction;
 
@@ -87,6 +88,8 @@ public class HelloWorldExtension extends BaseExtension implements ActionExtensio
     private SDKClient.SDKRestClient createRestClient(ExtensionsRunner runner) {
         @SuppressWarnings("resource")
         SDKClient.SDKRestClient client = runner.getSdkClient().initializeRestClient();
+        HelloWorldJobRunner jobRunner = HelloWorldJobRunner.getJobRunnerInstance();
+        jobRunner.setClient(client);
         return client;
     }
 
